@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - uses: actions/checkout@v4
@@ -24,9 +24,7 @@ jobs:
         gradle-version: '8.5'
 
     - name: Build Debug APK
-      run: |
-        chmod +x ./gradlew
-        ./gradlew assembleDebug --no-daemon --stacktrace
+      run: .\gradlew.bat assembleDebug --no-daemon --stacktrace
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
