@@ -2,69 +2,159 @@ package com.signalsense.ai.presentation.map
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.signalsense.ai.core.theme.DeepBlue
 import com.signalsense.ai.core.theme.ElectricBlue
-import androidx.compose.ui.Alignment
+import com.signalsense.ai.data.remote.OpenCelliDCell
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import org.osmdroid.views.overlay.Polygon
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.signalsense.ai.presentation.components.ScanningPulse
 
 @Composable
 fun MapScreen(viewModel: MapViewModel = hiltViewModel()) {
-    val towers by viewModel.towerLocations.collectAsState(initial = emptyList())
-    
+    val towers by viewModel.allNearbyTowers.collectAsState()
+    val userLocation by viewModel.userLocation.collectAsState()
+    val isLoading by viewModel.isLoadingTowers.collectAsState()
+
+    val centerLat = userLocation?.lat ?: 12.9716
+    val centerLng = userLocation?.lng ?: 77.5946
+
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
             factory = { context ->
                 MapView(context).apply {
                     setTileSource(TileSourceFactory.MAPNIK)
-                    controller.setZoom(15.0)
-                    controller.setCenter(GeoPoint(12.9716, 77.5946)) // Default to Bangalore for demo
+                    controller.setZoom(14.0)
+                    controller.setCenter(GeoPoint(centerLat, centerLng))
                     setMultiTouchControls(true)
-                    
-                    // Add Heatmap Overlay
-                    overlays.add(HeatmapOverlay(viewModel.heatmapPoints.value))
                 }
             },
             update = { mapView ->
                 mapView.overlays.clear()
-                
-                // Re-add Heatmap
-                mapView.overlays.add(HeatmapOverlay(viewModel.heatmapPoints.value))
-                
+                mapView.controller.setCenter(GeoPoint(centerLat, centerLng))
+
+                // Add user location marker
+                userLocation?.let { loc ->
+                    val userMarker = Marker(mapView)
+                    userMarker.position = GeoPoint(loc.lat, loc.lng)
+                    userMarker.title = "📍 You Are Here"
+                    userMarker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
+                    mapView.overlays.add(userMarker)
+                }
+
+                // Add all carrier towers from OpenCelliD
                 towers.forEach { tower ->
                     val marker = Marker(mapView)
-                    marker.position = GeoPoint(tower.lat, tower.lng)
-                    marker.title = "${tower.carrier} Tower"
+                    marker.position = GeoPoint(tower.lat, tower.lon)
+                    marker.title = "${carrierEmoji(tower.carrierName)} ${tower.carrierName} Tower"
+                    marker.snippet = "${tower.networkType} • Signal: ${tower.averageSignal} dBm • Samples: ${tower.samples}"
                     marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                     mapView.overlays.add(marker)
                 }
+
                 mapView.invalidate()
             },
             modifier = Modifier.fillMaxSize()
         )
 
-        // Overlay Panels
+        // Top overlay: Loading + tower count
         Column(modifier = Modifier.padding(16.dp)) {
-            AIRecommendationCard(viewModel)
+            if (isLoading) {
+                Surface(
+                    color = DeepBlue.copy(alpha = 0.85f),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        CircularProgressIndicator(
+                            color = ElectricBlue,
+                            modifier = Modifier.size(16.dp),
+                            strokeWidth = 2.dp
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Fetching towers from OpenCelliD...", color = Color.White, fontSize = 12.sp)
+                    }
+                }
+            } else if (towers.isNotEmpty()) {
+                Surface(
+                    color = DeepBlue.copy(alpha = 0.85f),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    Text(
+                        "📡 ${towers.size} towers found nearby",
+                        color = ElectricBlue,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 13.sp,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+            }
+
             Spacer(modifier = Modifier.weight(1f))
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                ScanningPulse()
+
+            // Carrier legend
+            CarrierLegend(towers)
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Refresh button
+            Button(
+                onClick = { viewModel.fetchTowersFromCloud() },
+                colors = ButtonDefaults.buttonColors(containerColor = ElectricBlue),
+                shape = RoundedCornerShape(8.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("🔄 Refresh All Towers", color = Color.Black, fontWeight = FontWeight.Bold)
             }
         }
     }
+}
+
+@Composable
+fun CarrierLegend(towers: List<OpenCelliDCell>) {
+    if (towers.isEmpty()) return
+
+    val carrierCounts = towers.groupBy { it.carrierName }.mapValues { it.value.size }
+
+    Surface(
+        color = DeepBlue.copy(alpha = 0.85f),
+        shape = RoundedCornerShape(12.dp)
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Text("Tower Count by Carrier", color = ElectricBlue, fontWeight = FontWeight.Bold, fontSize = 11.sp)
+            Spacer(modifier = Modifier.height(6.dp))
+            carrierCounts.forEach { (carrier, count) ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text("${carrierEmoji(carrier)} $carrier", color = Color.White, fontSize = 12.sp)
+                    Text("$count towers", color = Color.Gray, fontSize = 12.sp)
+                }
+            }
+        }
+    }
+}
+
+fun carrierEmoji(carrier: String): String = when (carrier) {
+    "Airtel" -> "🔴"
+    "Jio" -> "🔵"
+    "Vi" -> "🟣"
+    "BSNL" -> "🟢"
+    else -> "⚪"
 }
 
 @Composable
