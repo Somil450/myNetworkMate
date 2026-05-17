@@ -159,6 +159,7 @@ fun AIAnalyticsPanel() {
                 color = ElectricBlue,
                 trackColor = Color.White.copy(alpha = 0.1f)
             )
+        }
     }
 }
 

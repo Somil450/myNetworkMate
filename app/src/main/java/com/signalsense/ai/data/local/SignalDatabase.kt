@@ -2,6 +2,7 @@ package com.signalsense.ai.data.local
 
 import androidx.room.*
 import com.signalsense.ai.domain.model.NetworkType
+import kotlinx.coroutines.flow.Flow
 
 @Entity(tableName = "signal_history")
 data class SignalReadingEntity(
