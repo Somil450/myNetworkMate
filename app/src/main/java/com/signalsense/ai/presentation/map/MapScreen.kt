@@ -9,6 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.viewinterop.AndroidView
 import com.signalsense.ai.core.theme.DeepBlue
 import com.signalsense.ai.core.theme.ElectricBlue
+import androidx.compose.ui.Alignment
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
