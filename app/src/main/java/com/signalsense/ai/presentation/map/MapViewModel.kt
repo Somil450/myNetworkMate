@@ -12,16 +12,29 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.signalsense.ai.data.telephony.TelephonyTracker
+
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    private val signalDao: SignalDao,
+    private val telephonyTracker: TelephonyTracker,
     private val heatmapProcessor: HeatmapProcessor
 ) : ViewModel() {
 
-    val towerLocations: StateFlow<List<TowerMapEntity>> = signalDao.getAllTowers()
+    val towerLocations: StateFlow<List<TowerMapEntity>> = telephonyTracker.towerInfoList
+        .map { towers ->
+            towers.mapIndexed { index, info ->
+                TowerMapEntity(
+                    towerId = info.id,
+                    lat = 12.9716 + (index * 0.002), // Spread around default Bangalore center
+                    lng = 77.5946 + (index * 0.002),
+                    carrier = info.carrier
+                )
+            }
+        }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     private val _heatmapPoints = MutableStateFlow<List<HeatPoint>>(emptyList())
