@@ -12,6 +12,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import android.content.Intent
+import android.provider.Settings
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
@@ -168,6 +171,7 @@ fun OptimizationAdviceCard() {
     GlassCard(
         modifier = Modifier.fillMaxWidth(),
     ) {
+        val context = LocalContext.current
         Column(modifier = Modifier.padding(16.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(
@@ -182,6 +186,18 @@ fun OptimizationAdviceCard() {
             Spacer(modifier = Modifier.height(8.dp))
             Text("Gaming Optimization Available", color = Color.White, fontWeight = FontWeight.SemiBold)
             Text("Switch to LTE (4G Only) in system settings. The nearby LTE tower has a stronger signal and likely lower latency.", color = Color.Gray, fontSize = 12.sp, modifier = Modifier.padding(top = 4.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+            Button(
+                onClick = {
+                    val intent = Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS)
+                    context.startActivity(intent)
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = com.signalsense.ai.core.theme.WarningOrange),
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text("Force Manual Network Scan", color = Color.Black, fontWeight = FontWeight.Bold)
+            }
         }
     }
 }

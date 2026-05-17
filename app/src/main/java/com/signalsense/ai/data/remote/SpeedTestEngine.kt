@@ -15,7 +15,8 @@ class SpeedTestEngine @Inject constructor() {
         .readTimeout(10, TimeUnit.SECONDS)
         .build()
 
-    private val TEST_URL = "https://speed.cloudflare.com/__down?bytes=5000000" // 5MB test file
+    private val TEST_URL = "https://speed.cloudflare.com/__down?bytes=50000000" // 50MB test file for accurate 5G speeds
+
 
     fun runDownloadTest(): Flow<SpeedResult> = flow {
         val startTime = System.currentTimeMillis()
