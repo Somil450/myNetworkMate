@@ -47,7 +47,7 @@ Built with a highly scalable **Clean Architecture** tailored for heavy backgroun
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/yourusername/signalsense-ai.git
+    git clone https://github.com/Somil450/myNetworkMate
     ```
 2.  **Open in Android Studio** (Jellyfish or newer recommended).
 3.  **Sync Gradle**.

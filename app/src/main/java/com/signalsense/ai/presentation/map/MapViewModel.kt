@@ -44,6 +44,29 @@ class MapViewModel @Inject constructor(
 
     val userLocation = locationTracker.location
 
+    private val _selectedTower = MutableStateFlow<OpenCelliDCell?>(null)
+    val selectedTower: StateFlow<OpenCelliDCell?> = _selectedTower.asStateFlow()
+
+    private val _currentTower = MutableStateFlow<OpenCelliDCell?>(null)
+    val currentTower: StateFlow<OpenCelliDCell?> = _currentTower.asStateFlow()
+
+    private val _targetTower = MutableStateFlow<OpenCelliDCell?>(null)
+    val targetTower: StateFlow<OpenCelliDCell?> = _targetTower.asStateFlow()
+
+    fun selectTower(tower: OpenCelliDCell?) {
+        _selectedTower.value = tower
+    }
+
+    fun setCurrentTower(tower: OpenCelliDCell?) {
+        _currentTower.value = tower
+        _selectedTower.value = null
+    }
+
+    fun setTargetTower(tower: OpenCelliDCell?) {
+        _targetTower.value = tower
+        _selectedTower.value = null
+    }
+
     init {
         locationTracker.startTracking()
         startPeriodicRefresh()

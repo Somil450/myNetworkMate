@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.signalsense.ai.data.local.SignalDao
 import com.signalsense.ai.data.local.SignalDatabase
 import com.signalsense.ai.data.location.LocationTracker
+import com.signalsense.ai.data.remote.MLSApi
 import com.signalsense.ai.data.remote.OpenCelliDApi
 import com.signalsense.ai.data.telephony.TelephonyTracker
 import dagger.Module
@@ -51,13 +52,22 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("https://opencellid.org/")
+    fun provideMlsRetrofit(): Retrofit = Retrofit.Builder()
+        .baseUrl("https://location.services.mozilla.com/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
     @Provides
     @Singleton
-    fun provideOpenCelliDApi(retrofit: Retrofit): OpenCelliDApi =
-        retrofit.create(OpenCelliDApi::class.java)
+    fun provideMlsApi(retrofit: Retrofit): MLSApi =
+        retrofit.create(MLSApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideOpenCelliDApi(): OpenCelliDApi =
+        Retrofit.Builder()
+            .baseUrl("https://opencellid.org/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(OpenCelliDApi::class.java)
 }
