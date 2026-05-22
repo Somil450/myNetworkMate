@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.signalsense.ai'
+    namespace 'com.networkmate.app'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.signalsense.ai"
+        applicationId "com.networkmate.app"
         minSdk 26
         targetSdk 34
         versionCode 1

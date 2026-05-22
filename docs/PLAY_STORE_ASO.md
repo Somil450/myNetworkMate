@@ -5,11 +5,11 @@ AI-powered telecom intelligence. Track towers, test speed, and optimize your 5G/
 
 ## 📝 Full Description (Up to 4000 characters)
 
-**SignalSense AI: The Ultimate Network Intelligence Platform**
+**Network Mate: The Ultimate Network Intelligence Platform**
 
-Tired of dropped calls, high gaming ping, or unexplained 5G data stalls? **SignalSense AI** is a professional-grade telecom analytics tool that turns your smartphone into an advanced network intelligence dashboard. 
+Tired of dropped calls, high gaming ping, or unexplained 5G data stalls? **Network Mate** is a professional-grade telecom analytics tool that turns your smartphone into an advanced network intelligence dashboard. 
 
-Using on-device Artificial Intelligence, SignalSense doesn't just measure your speed—it *predicts* network congestion, maps hidden mobile towers, and provides smart directional guidance to ensure you are always connected to the best possible carrier.
+Using on-device Artificial Intelligence, NetworkMate doesn't just measure your speed—it *predicts* network congestion, maps hidden mobile towers, and provides smart directional guidance to ensure you are always connected to the best possible carrier.
 
 ### 🌟 Key Features
 
@@ -20,9 +20,9 @@ Using on-device Artificial Intelligence, SignalSense doesn't just measure your s
 *   **🏎 Bandwidth-Efficient Speed Tests**: Test your download, upload, latency, and jitter without burning through your data cap. Get instant "Gaming" and "Streaming" suitability scores.
 *   **🔒 Privacy-First**: No personal data is ever collected. Crowdsourced analytics are 100% anonymized, encrypted, and strictly opt-in.
 
-Whether you are a competitive gamer needing the lowest latency, a remote worker requiring stable video calls, or a telecom enthusiast exploring local infrastructure, SignalSense AI provides the enterprise-grade tools you need.
+Whether you are a competitive gamer needing the lowest latency, a remote worker requiring stable video calls, or a telecom enthusiast exploring local infrastructure, Network Mate provides the enterprise-grade tools you need.
 
-**Download SignalSense AI today and take control of your connectivity.**
+**Download Network Mate today and take control of your connectivity.**
 
 ---
 

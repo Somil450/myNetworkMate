@@ -1,6 +1,6 @@
-# Contributing to SignalSense AI
+# Contributing to Network Mate
 
-First off, thank you for considering contributing to SignalSense AI! It's people like you that make the open-source telecom analytics community thrive.
+First off, thank you for considering contributing to Network Mate! It's people like you that make the open-source telecom analytics community thrive.
 
 ## Code of Conduct
 By participating in this project, you are expected to uphold our [Code of Conduct](CODE_OF_CONDUCT.md).

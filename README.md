@@ -1,10 +1,10 @@
-# SignalSense AI 📡🧠
+# Network Mate 📡🧠
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-1.9.22-blue.svg)](https://kotlinlang.org)
 [![Compose](https://img.shields.io/badge/Jetpack_Compose-Material_3-brightgreen.svg)](https://developer.android.com/jetpack/compose)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**SignalSense AI** is a production-grade, AI-powered telecom intelligence platform for Android. It transforms raw cellular data into actionable insights, providing real-time tower tracking, predictive congestion analysis, and crowdsourced geo-spatial heatmaps.
+**Network Mate** is a production-grade, AI-powered telecom intelligence platform for Android. It transforms raw cellular data into actionable insights, providing real-time tower tracking, predictive congestion analysis, and crowdsourced geo-spatial heatmaps.
 
 ---
 
@@ -52,7 +52,7 @@ Built with a highly scalable **Clean Architecture** tailored for heavy backgroun
 2.  **Open in Android Studio** (Jellyfish or newer recommended).
 3.  **Sync Gradle**.
 4.  **Run on a Physical Device**:
-    *Note: SignalSense AI requires a physical Android device with an active SIM card. Android Emulators do not accurately simulate `TelephonyManager` APIs.*
+    *Note: Network Mate requires a physical Android device with an active SIM card. Android Emulators do not accurately simulate `TelephonyManager` APIs.*
 
 ### Required Permissions
 *   `ACCESS_FINE_LOCATION`: Required by Android to access Cell ID data.
@@ -74,7 +74,7 @@ We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for 
 
 ## 🔒 Privacy & Security
 
-SignalSense AI is built with a **Privacy-First** architecture. Telemetry is collected anonymously, utilizing `EncryptedSharedPreferences` and robust opt-in consent flows. See [SECURITY.md](SECURITY.md) for vulnerability reporting.
+Network Mate is built with a **Privacy-First** architecture. Telemetry is collected anonymously, utilizing `EncryptedSharedPreferences` and robust opt-in consent flows. See [SECURITY.md](SECURITY.md) for vulnerability reporting.
 
 ## 📄 License
 
